@@ -11,7 +11,8 @@
 static LGFX lcd;                 // LGFXのインスタンスを作成。
 
 static lv_disp_draw_buf_t draw_buf;
-static lv_color_t buf[ MAIN_CONTENT_WIDTH * 10 ];
+// static lv_color_t buf[ MAIN_CONTENT_WIDTH * 10 ];
+static lv_color_t *disp_draw_buf;
 
 /* Display flushing */
 void my_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p){
@@ -49,7 +50,8 @@ void lcd_init(void) {
     lcd.setBrightness(128);
 
     lv_init();
-    lv_disp_draw_buf_init( &draw_buf, buf, NULL, MAIN_CONTENT_WIDTH * 10 );
+    disp_draw_buf = LV_MEM_SIZE;
+    lv_disp_draw_buf_init( &draw_buf, disp_draw_buf, NULL, MAIN_CONTENT_WIDTH * 10 );
 
     /*Initialize the display*/
     static lv_disp_drv_t disp_drv;
@@ -134,7 +136,8 @@ void lcd_init(void) {
   screenWidth = gfx->width();
   screenHeight = gfx->height();
 #ifdef ESP32
-  disp_draw_buf = (lv_color_t *)heap_caps_malloc(sizeof(lv_color_t) * screenWidth * screenHeight/4 , MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+  // disp_draw_buf = (lv_color_t *)heap_caps_malloc(sizeof(lv_color_t) * screenWidth * screenHeight/4 , MALLOC_CAP_INTERNAL | MALLOC_CAP_8BIT);
+  disp_draw_buf = LV_MEM_SIZE;
 #else
   disp_draw_buf = (lv_color_t *)malloc(sizeof(lv_color_t) * screenWidth * screenHeight/4);
 #endif
