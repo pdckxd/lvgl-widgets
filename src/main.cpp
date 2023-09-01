@@ -9,7 +9,8 @@
 ///////////////////// LCD INIT ////////////////////
 #ifdef LOVYAN_GFX
 static LGFX lcd;                 // LGFXのインスタンスを作成。
-
+static uint32_t screenWidth;
+static uint32_t screenHeight;
 static lv_disp_draw_buf_t draw_buf;
 // static lv_color_t buf[ MAIN_CONTENT_WIDTH * 10 ];
 static lv_color_t *disp_draw_buf;
@@ -50,8 +51,10 @@ void lcd_init(void) {
     lcd.setBrightness(128);
 
     lv_init();
+    screenWidth = lcd.width();
+    screenHeight = lcd.height();
     disp_draw_buf = LV_MEM_SIZE;
-    lv_disp_draw_buf_init( &draw_buf, disp_draw_buf, NULL, MAIN_CONTENT_WIDTH * 10 );
+    lv_disp_draw_buf_init( &draw_buf, disp_draw_buf, NULL, screenWidth * screenHeight/4 );
 
     /*Initialize the display*/
     static lv_disp_drv_t disp_drv;
